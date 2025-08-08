@@ -7,34 +7,34 @@ import Notification from '../Notification/Notification'
 import { type VoteType, type Votes } from '../../types/votes'
 
 const App = () => {
-  const [count, setCount] = useState<Votes>({
+  const [votes, setVotes] = useState<Votes>({
     good: 0,
     neutral: 0,
     bad: 0
   })
 
-  const handleClick = (type: VoteType) => {
-    setCount({
-      ...count,
-      [type]: count[type] + 1
+  const onVote = (type: VoteType) => {
+    setVotes({
+      ...votes,
+      [type]: votes[type] + 1
     })
   }
 
-  const resetVotes = () => {
-    setCount({ good: 0,
+  const onReset = () => {
+    setVotes({ good: 0,
     neutral: 0,
     bad: 0})
   }
 
-  const totalVotes = count.bad + count.good + count.neutral;
+  const totalVotes = votes.bad + votes.good + votes.neutral;
 
-  const positiveCount = totalVotes ? Math.round((count.good / totalVotes) * 100) : 0;
+  const positiveRate = totalVotes ? Math.round((votes.good / totalVotes) * 100) : 0;
 
   return (
     <div className={css.app}>
       <CafeInfo />
-      <VoteOptions handleClick={ handleClick} resetVotes={resetVotes} hasVotes={totalVotes > 0} />
-      {totalVotes > 0 ? (<VoteStats count={count} totalVotes={totalVotes} positiveCount={positiveCount} />) : <Notification/>}
+      <VoteOptions onVote={ onVote} onReset={onReset} canReset={totalVotes > 0} />
+      {totalVotes > 0 ? (<VoteStats votes={votes} totalVotes={totalVotes} positiveRate={positiveRate} />) : <Notification/>}
         
   </div>
   )
